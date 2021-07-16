@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import Modal from 'react-modal';
 import { IQuestionModel } from '../Models/IQuestionModel';
 
@@ -17,6 +18,10 @@ const customStyles = {
 export const QuestionModal = (props: QuestionModalProps): JSX.Element => {
     const [answerValue, setAnswerValue] = React.useState('');
     const [userMessage, setUserMessage] = React.useState('');
+
+    const buttonTranslator = useTranslation('buttons').t;
+    const punctuationTranslator = useTranslation('punctuation').t;
+    const phrasesTranslator = useTranslation('phrases').t;
 
     function onAfterOpen() {
         setAnswerValue('');
@@ -37,7 +42,8 @@ export const QuestionModal = (props: QuestionModalProps): JSX.Element => {
                 props.completeCallback(true, true);
             } else {
                 setUserMessage(
-                    'Sorry, the correct answer is ' + props.question.multiplicand * props.question.multiplier,
+                    phrasesTranslator('Sorry_the_correct_answer_is') +
+                        props.question.multiplicand * props.question.multiplier,
                 );
                 document.getElementById('modalCloseButton')?.focus();
             }
@@ -52,7 +58,8 @@ export const QuestionModal = (props: QuestionModalProps): JSX.Element => {
         return (
             <Modal isOpen={props.isOpen} onAfterOpen={onAfterOpen} style={customStyles}>
                 <div>
-                    What is {props.question.multiplicand} X {props.question.multiplier} ?
+                    {punctuationTranslator('questionStart')} {phrasesTranslator('What_is')}{' '}
+                    {props.question.multiplicand} X {props.question.multiplier} {punctuationTranslator('questionEnd')}
                 </div>
 
                 <form onSubmit={onFormSubmit}>
@@ -69,7 +76,7 @@ export const QuestionModal = (props: QuestionModalProps): JSX.Element => {
                         disabled={answerValue ? false : true}
                         style={{ display: userMessage ? 'none' : '' }}
                     >
-                        Answer
+                        {buttonTranslator('answer')}
                     </button>
                     <button
                         id="modalCloseButton"
@@ -77,7 +84,7 @@ export const QuestionModal = (props: QuestionModalProps): JSX.Element => {
                             props.completeCallback(answerValue ? true : false, answerCorrect());
                         }}
                     >
-                        Close
+                        {buttonTranslator('close')}
                     </button>
                 </form>
 

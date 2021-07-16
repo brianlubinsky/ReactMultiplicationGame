@@ -26,7 +26,8 @@
     "noFallthroughCasesInSwitch": true
   },
   "include": [
-    "src/**/*"
+    "src/**/*",
+    "react-i18next.d.ts"
   ],
   "exclude": [
     "node_modules",

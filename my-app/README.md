@@ -21,6 +21,7 @@ See [React With Typescript Best Practices](https://www.sitepoint.com/react-with-
 4. VSCode React Refactor
 
 ### Package installation
+
 1. Install yarn
 2. This includes the .vscode settings directory in the top level as an example. Run npm install in both the my-app subfolder and it's parent folder.
 
@@ -28,6 +29,10 @@ See [React With Typescript Best Practices](https://www.sitepoint.com/react-with-
 
 1. [Typescript Cheatsheet for React](https://github.com/typescript-cheatsheets/react)
 2. [Reference Guide for Typescript in React](https://blog.logrocket.com/your-reference-guide-to-using-typescript-in-react/)
+
+# Issues
+
+1. I was not able to successfully type the translations object. Judging by online comments, there are bugs in the package. 'Type instantiation is excessively deep and possibly infinite' bug. [React i18Next Typescript Documentation](https://react.i18next.com/latest/typescript)
 
 # Getting Started with Create React App
 

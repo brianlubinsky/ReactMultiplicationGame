@@ -3,9 +3,13 @@ import { AnswerStatus } from '../Models/AnswerStatus';
 import { GameStateContext } from '../Models/GameStateContext';
 import { GameStatus } from '../Models/GameStatus';
 import { Timer } from './Timer';
+import { useTranslation } from 'react-i18next';
 
 export const GameState = (): JSX.Element => {
     const context = React.useContext(GameStateContext);
+    const buttonTranslator = useTranslation('buttons').t;
+    const phrasesTranslator = useTranslation('phrases').t;
+    const wordsTranslator = useTranslation('words').t;
 
     //IMPORTANT - dispatch helper calls must all be wrapped in functions (arrow function in jsx will also work), otherwise closures get broken and this keyword gets confused
     function onStartClick() {
@@ -30,7 +34,11 @@ export const GameState = (): JSX.Element => {
         const date = new Date(0);
         date.setSeconds(seconds);
 
-        return <div>Elapsed Time : {date.toISOString().substr(11, 8)}</div>;
+        return (
+            <div>
+                {phrasesTranslator('Elapsed_Time')} : {date.toISOString().substr(11, 8)}
+            </div>
+        );
     }
 
     function getItems(): JSX.Element[] {
@@ -49,10 +57,12 @@ export const GameState = (): JSX.Element => {
             );
             items.push(
                 <div key={'Results'}>
-                    {context.gameState.gameStatus == GameStatus.Complete ? 'Final Result : ' : 'Progress : '}
-                    {context.gameState.questions.filter((x) => x.status === AnswerStatus.Correct).length} /
+                    {context.gameState.gameStatus == GameStatus.Complete
+                        ? 'Final Result '
+                        : wordsTranslator('Progress')}{' '}
+                    :{context.gameState.questions.filter((x) => x.status === AnswerStatus.Correct).length} /
                     {context.gameState.questions.filter((x) => x.status !== AnswerStatus.Unanswered).length}
-                    {' Correct '}
+                    {' ' + wordsTranslator('Correct')}
                 </div>,
             );
         }
@@ -60,7 +70,7 @@ export const GameState = (): JSX.Element => {
         if (context.gameState.gameStatus == GameStatus.Complete)
             items.push(
                 <button key="Reset" onClick={onResetClick}>
-                    Reset
+                    {buttonTranslator('reset')}
                 </button>,
             );
         else {
@@ -70,7 +80,7 @@ export const GameState = (): JSX.Element => {
                     onClick={onStartClick}
                     disabled={context.gameState.gameStatus === GameStatus.Started}
                 >
-                    Start
+                    {buttonTranslator('start')}
                 </button>,
             );
             items.push(
@@ -79,12 +89,12 @@ export const GameState = (): JSX.Element => {
                     onClick={onPauseClick}
                     disabled={context.gameState.gameStatus !== GameStatus.Started}
                 >
-                    Pause
+                    {buttonTranslator('pause')}
                 </button>,
             );
             items.push(
                 <button key="Stop" onClick={onStopClick} disabled={context.gameState.gameStatus === GameStatus.Idle}>
-                    Stop
+                    {buttonTranslator('stop')}
                 </button>,
             );
         }
