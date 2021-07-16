@@ -20,6 +20,10 @@ See [React With Typescript Best Practices](https://www.sitepoint.com/react-with-
 3. npm / npm intellisense
 4. VSCode React Refactor
 
+### Package installation
+1. Install yarn
+2. This includes the .vscode settings directory in the top level as an example. Run npm install in both the my-app subfolder and it's parent folder.
+
 # Typescript with React resources
 
 1. [Typescript Cheatsheet for React](https://github.com/typescript-cheatsheets/react)
