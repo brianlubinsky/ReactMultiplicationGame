@@ -1,0 +1,15 @@
+{
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.28.3",
+    "@typescript-eslint/parser": "^4.28.3",
+    "eslint": "^7.30.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^3.4.0",
+    "eslint-plugin-react": "^7.24.0",
+    "prettier": "^2.3.2"
+  },
+  "dependencies": {
+    "react-modal": "^3.14.3",
+    "react-timer-hook": "^3.0.4"
+  }
+}
