@@ -1,12 +1,14 @@
 import React from 'react';
 import { AnswerStatus } from '../Models/AnswerStatus';
 import { IQuestionModel } from '../Models/IQuestionModel';
+import { QuestionView, questionViewModel, questionActions } from '../Views/QuestionView';
+import { controllerFactory } from '../MVC/controllerFactory';
 
 export const Question = (props: QuestionProps): JSX.Element => {
-    function backgroundColor(): string {
+    function getBackgroundColor(): string {
         if (props.question.status == AnswerStatus.Correct) return 'green';
         else if (props.question.status == AnswerStatus.Incorrect) return 'red';
-        else return props.gameInProgress ? 'yellow' : '#efeff5'; //rgb(255,255,150)';
+        else return props.gameInProgress ? 'yellow' : '#efeff5';
     }
 
     function cursor(): string {
@@ -14,37 +16,29 @@ export const Question = (props: QuestionProps): JSX.Element => {
         else return 'auto';
     }
 
-    function onKeyUp(e: React.KeyboardEvent<HTMLDivElement>) {
-        if (e.key === 'Enter') {
-            select();
-        }
-        e.preventDefault();
-    }
-
     function select() {
         props.selectCallback(props.question);
     }
 
-    return (
-        <>
-            <span
-                tabIndex={props.question.status == AnswerStatus.Unanswered ? 0 : -1}
-                onKeyUp={onKeyUp}
-                onClick={select}
-                style={{
-                    width: '100px',
-                    height: '55px',
-                    display: 'inline-block',
-                    margin: '10px',
-                    background: backgroundColor(),
-                    lineHeight: '55px',
-                    cursor: cursor(),
-                }}
-            >
-                {props.question.multiplicand} X {props.question.multiplier}
-            </span>
-        </>
+    function getViewModel(): questionViewModel {
+        return {
+            question: props.question,
+            backgroundColor: getBackgroundColor(),
+            cursor: cursor(),
+        };
+    }
+
+    function getViewActions(): questionActions {
+        return { select: select };
+    }
+
+    const controller = controllerFactory.getController<questionViewModel, questionActions>(
+        getViewModel,
+        getViewActions,
+        new QuestionView(),
     );
+
+    return controller.render();
 };
 
 type QuestionProps = {

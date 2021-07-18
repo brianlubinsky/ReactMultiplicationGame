@@ -4,7 +4,7 @@ import { Timer, TimerProps } from '../Components/Timer';
 
 export class GameStateView extends ViewBase<gameStateViewModel, gameStateActions> {
     render(viewModel: gameStateViewModel, viewActions: gameStateActions): JSX.Element {
-        function getItems(): JSX.Element[] {
+        function getElements(): JSX.Element[] {
             const items: JSX.Element[] = [];
             items.push(<div key="gameStateMarginDiv" style={{ marginTop: '10px' }}></div>);
 
@@ -48,7 +48,7 @@ export class GameStateView extends ViewBase<gameStateViewModel, gameStateActions
             return items;
         }
 
-        return <>{getItems()}</>;
+        return <>{getElements()}</>;
     }
 }
 
