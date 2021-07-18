@@ -6,7 +6,7 @@ import { GameStateDispatchHelper } from '../Reducers/GameStateDispatchHelper';
 import { gameStateReducer, GameStateReducerAction } from '../Reducers/GameStateReducer';
 import { QuestionList } from './QuestionList';
 import { GameStateQuestionsDispatchHelper } from '../Reducers/GameStateQuestionsDispatchHelper';
-import GameStateController from './GameState';
+import GameState from './GameState';
 import { GameStateContext } from '../Models/GameStateContext';
 
 export const GameContainer = (): JSX.Element => {
@@ -29,7 +29,7 @@ export const GameContainer = (): JSX.Element => {
                     dispatchHelper: gameStateDispatchHelper,
                 }}
             >
-                <GameStateController></GameStateController>
+                <GameState></GameState>
             </GameStateContext.Provider>
 
             <QuestionListContext.Provider
