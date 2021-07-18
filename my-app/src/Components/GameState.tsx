@@ -1,93 +1,20 @@
 import React from 'react';
 import { AnswerStatus } from '../Models/AnswerStatus';
-import { GameStateContext, IGameStateContextModel } from '../Models/GameStateContext';
+import { GameStateContext } from '../Models/GameStateContext';
 import { GameStatus } from '../Models/GameStatus';
 import { Timer, TimerProps } from './Timer';
-import { useTranslation, UseTranslationResponse } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
-//Trying this one as an MVC-ish pattern. 'Controller' returns a view model and exposes actions.
-//Clean rendering method, logic separated to create a more testable 'pure' component
-//Probably should make the controller a class
-export const GameState = (): JSX.Element => {
-    const { viewModel, actions } = gameStateController(React.useContext(GameStateContext), (ns: string | undefined) => {
-        return useTranslation(ns);
-    });
+//Trying this one as an MVC-ish pattern.
+//Clean rendering method, logic separated to create a more testable, easier to debug (see components tab) 'pure' component
 
-    function getItems(): JSX.Element[] {
-        const items: JSX.Element[] = [];
-        items.push(<div key="gameStateMarginDiv" style={{ marginTop: '10px' }}></div>);
+export const GameStateController = (): JSX.Element => {
+    const buttonTranslator = useTranslation('buttons').t;
+    const wordsTranslator = useTranslation('words').t;
+    const phrasesTranslator = useTranslation('phrases').t;
 
-        if (viewModel.showResults) {
-            items.push(
-                <Timer
-                    key={'Timer'}
-                    gameStatus={viewModel.timerSettings.gameStatus}
-                    intervalMilliseconds={viewModel.timerSettings.intervalMilliseconds}
-                    incrementValue={viewModel.timerSettings.incrementValue}
-                    renderMethod={viewModel.timerSettings.renderMethod}
-                ></Timer>,
-            );
-            items.push(<div key={'Results'}>{viewModel.currentResults}</div>);
-        }
-
-        if (viewModel.displayReset)
-            items.push(
-                <button key="Reset" onClick={actions.reset}>
-                    {viewModel.verbiage.buttons.reset}
-                </button>,
-            );
-        else {
-            items.push(
-                <button key="Start" onClick={actions.start} disabled={viewModel.startButtonDisabled}>
-                    {viewModel.verbiage.buttons.start}
-                </button>,
-            );
-            items.push(
-                <button key="Pause" onClick={actions.pause} disabled={viewModel.pauseButtonDisabled}>
-                    {viewModel.verbiage.buttons.pause}
-                </button>,
-            );
-            items.push(
-                <button key="Stop" onClick={actions.stop} disabled={viewModel.stopButtonDisabled}>
-                    {viewModel.verbiage.buttons.stop}
-                </button>,
-            );
-        }
-
-        return items;
-    }
-
-    return <>{getItems()}</>;
-};
-
-export default GameState;
-
-type gameStateActions = { start: () => void; pause: () => void; stop: () => void; reset: () => void };
-
-type gameStateViewModel = {
-    showResults: boolean;
-    currentResults: string;
-    displayReset: boolean;
-    startButtonDisabled: boolean;
-    pauseButtonDisabled: boolean;
-    stopButtonDisabled: boolean;
-    verbiage: {
-        phrases: { elapsedTime: string };
-        words: { progress: string; correct: string };
-        buttons: { reset: string; start: string; pause: string; stop: string };
-    };
-    timerSettings: TimerProps;
-};
-
-const gameStateController = (
-    context: IGameStateContextModel,
-    useTranslationFunction: (ns: string | undefined) => UseTranslationResponse<string>,
-): { viewModel: gameStateViewModel; actions: gameStateActions } => {
-    const buttonTranslator = useTranslationFunction('buttons').t;
-    const wordsTranslator = useTranslationFunction('words').t;
-    const phrasesTranslator = useTranslationFunction('phrases').t;
-
-    const viewModel = {
+    const context = React.useContext(GameStateContext);
+    const viewModel: gameStateViewModel = {
         showResults: context.gameState.gameStatus !== GameStatus.Idle,
         currentResults: getCurrentResults(),
         displayReset: context.gameState.gameStatus == GameStatus.Complete,
@@ -141,7 +68,7 @@ const gameStateController = (
         };
     }
 
-    const actions = {
+    const actions: gameStateActions = {
         start: () => context.dispatchHelper.start(),
         pause: () => context.dispatchHelper.pause(),
         stop: () => {
@@ -150,5 +77,75 @@ const gameStateController = (
         reset: () => context.dispatchHelper.reset(),
     };
 
-    return { viewModel, actions };
+    return <GameStateView viewModel={viewModel} actions={actions}></GameStateView>;
 };
+
+export const GameStateView = (props: { viewModel: gameStateViewModel; actions: gameStateActions }): JSX.Element => {
+    const viewModel = props.viewModel;
+    const actions = props.actions;
+
+    function getItems(): JSX.Element[] {
+        const items: JSX.Element[] = [];
+        items.push(<div key="gameStateMarginDiv" style={{ marginTop: '10px' }}></div>);
+
+        if (viewModel.showResults) {
+            items.push(
+                <Timer
+                    key={'Timer'}
+                    gameStatus={viewModel.timerSettings.gameStatus}
+                    intervalMilliseconds={viewModel.timerSettings.intervalMilliseconds}
+                    incrementValue={viewModel.timerSettings.incrementValue}
+                    renderMethod={viewModel.timerSettings.renderMethod}
+                ></Timer>,
+            );
+            items.push(<div key={'Results'}>{viewModel.currentResults}</div>);
+        }
+
+        if (viewModel.displayReset)
+            items.push(
+                <button key="Reset" onClick={actions.reset}>
+                    {viewModel.verbiage.buttons.reset}
+                </button>,
+            );
+        else {
+            items.push(
+                <button key="Start" onClick={actions.start} disabled={viewModel.startButtonDisabled}>
+                    {viewModel.verbiage.buttons.start}
+                </button>,
+            );
+            items.push(
+                <button key="Pause" onClick={actions.pause} disabled={viewModel.pauseButtonDisabled}>
+                    {viewModel.verbiage.buttons.pause}
+                </button>,
+            );
+            items.push(
+                <button key="Stop" onClick={actions.stop} disabled={viewModel.stopButtonDisabled}>
+                    {viewModel.verbiage.buttons.stop}
+                </button>,
+            );
+        }
+
+        return items;
+    }
+
+    return <>{getItems()}</>;
+};
+
+type gameStateActions = { start: () => void; pause: () => void; stop: () => void; reset: () => void };
+
+type gameStateViewModel = {
+    showResults: boolean;
+    currentResults: string;
+    displayReset: boolean;
+    startButtonDisabled: boolean;
+    pauseButtonDisabled: boolean;
+    stopButtonDisabled: boolean;
+    verbiage: {
+        phrases: { elapsedTime: string };
+        words: { progress: string; correct: string };
+        buttons: { reset: string; start: string; pause: string; stop: string };
+    };
+    timerSettings: TimerProps;
+};
+
+export default GameStateController;
