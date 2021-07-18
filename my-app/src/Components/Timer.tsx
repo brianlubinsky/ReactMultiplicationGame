@@ -17,7 +17,7 @@ export const Timer = (props: TimerProps): JSX.Element => {
     return <>{items}</>;
 };
 
-type TimerProps = {
+export type TimerProps = {
     gameStatus: GameStatus;
     intervalMilliseconds: number;
     incrementValue: number;
