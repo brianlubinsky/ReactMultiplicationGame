@@ -82,13 +82,7 @@ export const GameState = (): JSX.Element => {
         };
     }
 
-    const gameStateController = controllerFactory.getController<gameStateViewModel, gameStateActions>(
-        getViewModel,
-        getActions,
-        new GameStateView(),
-    );
-
-    return gameStateController.render();
+    return <GameStateView viewModel={getViewModel()} viewActions={getActions()}></GameStateView>;
 };
 
 export default GameState;

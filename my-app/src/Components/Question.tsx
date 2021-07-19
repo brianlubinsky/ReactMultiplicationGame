@@ -32,13 +32,7 @@ export const Question = (props: QuestionProps): JSX.Element => {
         return { select: select };
     }
 
-    const controller = controllerFactory.getController<questionViewModel, questionActions>(
-        getViewModel,
-        getViewActions,
-        new QuestionView(),
-    );
-
-    return controller.render();
+    return <QuestionView viewModel={getViewModel()} viewActions={getViewActions()}></QuestionView>;
 };
 
 type QuestionProps = {
