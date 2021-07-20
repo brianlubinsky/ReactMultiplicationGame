@@ -1,9 +1,10 @@
+/* eslint-disable react/display-name */
 import React from 'react';
-//import { ViewBase } from '../MVC/ViewBase';
 import { Timer, TimerProps } from '../Components/Timer';
+import { ConsoleLogProfiler } from '../ConsoleLogProfiler';
+import { IViewProps, viewPropsComparer } from '../ViewHelpers/IViewProps';
 
-//export class GameStateView extends ViewBase<gameStateViewModel, gameStateActions> {
-export const GameStateView = (props: { viewModel: gameStateViewModel; viewActions: gameStateActions }): JSX.Element => {
+export const GameStateView = React.memo((props: IViewProps<gameStateViewModel, gameStateActions>): JSX.Element => {
     function getElements(): JSX.Element[] {
         const items: JSX.Element[] = [];
         items.push(<div key="gameStateMarginDiv" style={{ marginTop: '10px' }}></div>);
@@ -48,8 +49,16 @@ export const GameStateView = (props: { viewModel: gameStateViewModel; viewAction
         return items;
     }
 
-    return <>{getElements()}</>;
-};
+    //Profiler component appears to give false positives here. Looking at Profiler in debugger shows only timer rerendering.
+    return (
+        <>
+            {/* <ConsoleLogProfiler id="gameStateView"> */}
+            {getElements()}
+
+            {/* </ConsoleLogProfiler> */}
+        </>
+    );
+}, viewPropsComparer);
 
 export type gameStateActions = { start: () => void; pause: () => void; stop: () => void; reset: () => void };
 

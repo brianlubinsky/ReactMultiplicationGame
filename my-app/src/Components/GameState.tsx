@@ -3,10 +3,9 @@ import { AnswerStatus } from '../Models/AnswerStatus';
 import { GameStateContext } from '../Models/GameStateContext';
 import { GameStatus } from '../Models/GameStatus';
 import { useTranslation } from 'react-i18next';
-import { controllerFactory } from '../MVC/controllerFactory';
 import { GameStateView, gameStateViewModel, gameStateActions } from '../Views/GameStateView';
 
-//Trying this one as an MVC-ish pattern.
+//Trying this one as an MVC-ish (or container/presenter) pattern.
 //Clean rendering method, logic separated to create a more testable, easier to debug (see components tab) 'pure' component
 export const GameState = (): JSX.Element => {
     const buttonTranslator = useTranslation('buttons').t;

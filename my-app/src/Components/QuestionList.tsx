@@ -20,7 +20,12 @@ export const QuestionList = (): JSX.Element => {
 
     //avoid race condition by only opening modal after setCurrentQuestion completes
     useEffect(() => {
-        if (currentQuestion.multiplicand > 0 && currentQuestion.multiplier > 0) setIsModalOpen(true);
+        if (
+            currentQuestion.multiplicand > 0 &&
+            currentQuestion.multiplier > 0 &&
+            currentQuestion.status == AnswerStatus.Unanswered
+        )
+            setIsModalOpen(true);
     }, [currentQuestion]);
 
     function onQuestionSelected(question: IQuestionModel) {
@@ -45,7 +50,7 @@ export const QuestionList = (): JSX.Element => {
                 return (
                     <Question
                         key={100 * question.multiplicand + question.multiplier}
-                        question={question}
+                        question={{ ...question }}
                         gameInProgress={context.gameStatus == GameStatus.Started}
                         selectCallback={onQuestionSelected}
                     ></Question>
