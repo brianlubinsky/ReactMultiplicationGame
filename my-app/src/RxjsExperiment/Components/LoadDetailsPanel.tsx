@@ -1,0 +1,37 @@
+import React, { useCallback, useContext, useEffect, useState } from 'react';
+import { IndexDataServiceContext } from '../Services/IndexDataService';
+import { IndexData } from '../DataModels/IndexData';
+
+//import { useParams } from 'react-router-dom';
+
+function LoadDetailsPanel(): JSX.Element {
+    const [indexData, setIndexData] = useState<IndexData | null>(null);
+
+    const context = useContext(IndexDataServiceContext);
+
+    useEffect(() => {
+        const subscription = context?.indexData$.subscribe((value) => {
+            if (value) {
+                console.log(
+                    new Date().getMilliseconds() + 'setting index data in load details panel ' + JSON.stringify(value),
+                );
+                setIndexData(value);
+            }
+        });
+
+        return subscription?.unsubscribe;
+    }, [context]);
+
+    if (indexData)
+        return (
+            <div style={{ borderColor: 'black', borderStyle: 'groove', borderWidth: 2 }}>
+                <div style={{ fontSize: 16, fontWeight: 'bold' }}>Load details</div>
+                <div>FROM:{indexData.from}</div>
+                <div>TO:{indexData.to}</div>
+                <div>STATUS:{indexData.status}</div>
+            </div>
+        );
+    else return <></>;
+}
+
+export default LoadDetailsPanel;

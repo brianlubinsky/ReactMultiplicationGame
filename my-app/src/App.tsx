@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import './App.css';
-import GameContainer from './Components/GameContainer';
+//import GameContainer from './Components/GameContainer';
 import i18n from './i18n_NEW';
+import LoadDetailsPage from './RxjsExperiment/Components/LoadDetailsPage';
 
 function App(props: AppProps): JSX.Element {
     const [language, setLanguage] = useState('en');
@@ -18,8 +19,9 @@ function App(props: AppProps): JSX.Element {
 
     return (
         <div className="App">
-            <button onClick={() => toggleLanguage()}> Toggle Language</button>
-            <GameContainer></GameContainer>
+            {/* <button onClick={() => toggleLanguage()}> Toggle Language</button> */}
+            {/* <GameContainer></GameContainer> */}
+            <LoadDetailsPage></LoadDetailsPage>
         </div>
     );
 }

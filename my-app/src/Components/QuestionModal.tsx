@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import Modal from 'react-modal';
 import { IQuestionModel } from '../Models/IQuestionModel';
 
-const customStyles = {
+const customStyles: Modal.Styles = {
     content: {
         top: '50%',
         left: '50%',
@@ -12,7 +12,7 @@ const customStyles = {
         marginRight: '-50%',
         transform: 'translate(-50%, -50%)',
     },
-    overlay: { zIndex: 1000 },
+    overlay: { zIndex: 1000, maxWidth: 200, maxHeight: 200, position: 'relative', top: '30px' },
 };
 
 export const QuestionModal = (props: QuestionModalProps): JSX.Element => {
@@ -56,7 +56,14 @@ export const QuestionModal = (props: QuestionModalProps): JSX.Element => {
 
     if (props.question)
         return (
-            <Modal isOpen={props.isOpen} onAfterOpen={onAfterOpen} style={customStyles}>
+            <Modal
+                isOpen={props.isOpen}
+                onAfterOpen={onAfterOpen}
+                style={customStyles}
+                parentSelector={() => {
+                    return document.querySelector('#modalAnchor') as HTMLElement;
+                }}
+            >
                 <div>
                     {punctuationTranslator('questionStart')} {phrasesTranslator('What_is')}{' '}
                     {props.question.multiplicand} X {props.question.multiplier} {punctuationTranslator('questionEnd')}

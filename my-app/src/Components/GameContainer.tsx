@@ -41,6 +41,19 @@ export const GameContainer = (): JSX.Element => {
             >
                 <QuestionList></QuestionList>
             </QuestionListContext.Provider>
+
+            <div
+                id="modalAnchor"
+                style={{
+                    width: '200px',
+                    margin: 'auto',
+                    borderWidth: '2px',
+                    borderStyle: 'dashed',
+                    borderColor: 'black',
+                }}
+            >
+                Anchor
+            </div>
         </>
     );
 };
