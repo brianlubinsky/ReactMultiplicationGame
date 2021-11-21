@@ -25,7 +25,7 @@ function LoadDetailsPanel(): JSX.Element {
     if (indexData)
         return (
             <div style={{ borderColor: 'black', borderStyle: 'groove', borderWidth: 2 }}>
-                <div style={{ fontSize: 16, fontWeight: 'bold' }}>Load details</div>
+                <div style={{ fontSize: 18, fontWeight: 'bold' }}>Load details</div>
                 <div>FROM:{indexData.from}</div>
                 <div>TO:{indexData.to}</div>
                 <div>STATUS:{indexData.status}</div>

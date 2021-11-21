@@ -24,6 +24,7 @@ function CarriersPanel(): JSX.Element {
             }
         });
 
+        //mistake to do this here, should just inject all services at the page level - if this component doesn't load until initial load does, there will be delays calling the broker GET
         setBrokerService(new BrokerService(7));
 
         return subscription?.unsubscribe;
@@ -56,7 +57,7 @@ function CarriersPanel(): JSX.Element {
     if (indexData)
         return (
             <div style={{ borderColor: 'black', borderStyle: 'groove', borderWidth: 2 }}>
-                <div style={{ fontSize: 16, fontWeight: 'bold' }}>Carrier details</div>
+                <div style={{ fontSize: 18, fontWeight: 'bold' }}>Carrier details</div>
                 <div>CUSTOMER:{indexData.customerName}</div>
                 <div>REFNO:{indexData.refNo}</div>
 

@@ -29,7 +29,7 @@ export class BrokerService implements IBrokerService
         console.log(new Date().getMilliseconds() + "loading broker data for load " + loadId);
 
         //Simulate one second to retrieve index data
-        const subscription = of ([{brokerType:"MX", contactName:"Jose", company:"Mx co"},{brokerType:"US", contactName:"Joe", company:"US co"}]).pipe(delay(1500)).subscribe(            
+        const subscription = of ([{brokerType:"MX", contactName:"Jose", company:"Mx co"},{brokerType:"US", contactName:"Joe", company:"US co"}]).pipe(delay(600)).subscribe(            
             x=>{
                 this.brokerSubject.next(x); 
                 this.loadingSubject.next(false)                

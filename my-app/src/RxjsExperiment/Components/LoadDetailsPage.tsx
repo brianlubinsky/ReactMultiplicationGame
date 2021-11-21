@@ -1,18 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import { BrokerService, BrokerServiceContext } from '../Services/BrokerService';
 import { IndexDataService, IndexDataServiceContext } from '../Services/IndexDataService';
+import { StopService, StopServiceContext } from '../Services/StopService';
+import { TrackingUpdateService, TrackingUpdateServiceContext } from '../Services/TrackingUpdateService';
 import CarriersPanel from './CarriersPanel';
 import LoadDetailsPanel from './LoadDetailsPanel';
+import StopsPanel from './StopsPanel';
+import TrackingUpdatesPanel from './TrackingUpdatesPanel';
 
 //import { useParams } from 'react-router-dom';
 
 function LoadDetailsPage(): JSX.Element {
     const loadId = 7;
     const [indexDataService, setIndexDataService] = useState<IndexDataService | null>(null);
+    const [stopService, setStopService] = useState<StopService | null>(null);
+    const [trackingUpdateService, setTrackingUpdateService] = useState<TrackingUpdateService | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
     useEffect(() => {
         setIndexDataService(new IndexDataService(loadId));
+        setStopService(new StopService(loadId));
+        setTrackingUpdateService(new TrackingUpdateService(loadId));
     }, []);
 
     useEffect(() => {
@@ -33,9 +41,14 @@ function LoadDetailsPage(): JSX.Element {
             <>
                 <IndexDataServiceContext.Provider value={indexDataService}>
                     <LoadDetailsPanel></LoadDetailsPanel>
-
                     <CarriersPanel></CarriersPanel>
                 </IndexDataServiceContext.Provider>
+                <StopServiceContext.Provider value={stopService}>
+                    <StopsPanel></StopsPanel>
+                    <TrackingUpdateServiceContext.Provider value={trackingUpdateService}>
+                        <TrackingUpdatesPanel></TrackingUpdatesPanel>{' '}
+                    </TrackingUpdateServiceContext.Provider>
+                </StopServiceContext.Provider>
             </>
         );
 }

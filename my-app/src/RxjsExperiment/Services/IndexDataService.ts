@@ -28,7 +28,7 @@ export class IndexDataService implements IIndexDataService
         console.log(new Date().getMilliseconds() + "loading index data for load " + loadId);
 
         //Simulate one second to retrieve index data
-        const subscription = of (<IndexData>{customerName:"The customer", refNo:"refno here", from:"Chicago, IL", to:"Juarez, MX", status:"Picked Up" }).pipe(delay(1000)).subscribe(            
+        const subscription = of (<IndexData>{customerName:"The customer", refNo:"refno here", from:"Chicago, IL", to:"Juarez, MX", status:"Picked Up" }).pipe(delay(500)).subscribe(            
             x=>{
                 this.indexDataSubject.next(x); 
                 this.loadingSubject.next(false)                
