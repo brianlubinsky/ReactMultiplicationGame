@@ -3,6 +3,7 @@ import { TrackingUpdateServiceContext } from '../Services/TrackingUpdateService'
 import { StopServiceContext } from '../Services/StopService';
 import { TrackingUpdate } from '../DataModels/TrackingUpdate';
 import { Stop } from '../DataModels/Stop';
+import { Logger } from '../Helpers/Logger';
 
 function TrackingUpdatesPanel(): JSX.Element {
     const [trackingUpdates, setTrackingUpdates] = useState<null | Array<TrackingUpdate>>(null);
@@ -12,12 +13,7 @@ function TrackingUpdatesPanel(): JSX.Element {
 
     useEffect(() => {
         const trackingUpdatesSubscription = trackingUpdateService?.trackingUpdates$.subscribe((value) => {
-            console.log(
-                new Date().getMilliseconds() +
-                    'setting trackingUpdate data in tracking updates panel ' +
-                    JSON.stringify(value),
-            );
-
+            Logger('setting tracking update  data in tracking updates panel ', value);
             setTrackingUpdates(value);
         });
 
@@ -28,10 +24,7 @@ function TrackingUpdatesPanel(): JSX.Element {
 
     useEffect(() => {
         const stopsSubscription = stopService?.stops$.subscribe((value) => {
-            console.log(
-                new Date().getMilliseconds() + 'setting stops data in tracking updates panel ' + JSON.stringify(value),
-            );
-
+            Logger('setting stop data in tracking updates panel ', value);
             setStops(value);
         });
 
@@ -54,6 +47,7 @@ function TrackingUpdatesPanel(): JSX.Element {
                     {trackingUpdates.map((x, index) => {
                         return (
                             <div key={'trackingUpdate' + index}>
+                                <br />
                                 {getLocationElement(x.stopId)}
                                 <div>Progress:{x.progress}</div>
                                 <div>Notes:{x.notes}</div>
@@ -63,7 +57,7 @@ function TrackingUpdatesPanel(): JSX.Element {
                 </div>
             </div>
         );
-    else return <div style={{ fontSize: 14, fontWeight: 'bold' }}>TrackingUpdates loading</div>;
+    else return <div style={{ fontSize: 18, fontWeight: 'bold' }}>TrackingUpdates loading</div>;
 }
 
 export default TrackingUpdatesPanel;

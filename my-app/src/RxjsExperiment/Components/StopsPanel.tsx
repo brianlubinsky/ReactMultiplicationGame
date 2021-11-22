@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { StopService, StopServiceContext } from '../Services/StopService';
 import { Stop } from '../DataModels/Stop';
+import { Logger } from '../Helpers/Logger';
 
 function StopsPanel(): JSX.Element {
     const [stops, setStops] = useState<null | Array<Stop>>(null);
@@ -10,10 +11,7 @@ function StopsPanel(): JSX.Element {
 
     useEffect(() => {
         const stopsSubscription = context?.stops$.subscribe((value) => {
-            console.log(
-                new Date().getMilliseconds() + 'setting stop data in STOPS details panel ' + JSON.stringify(value),
-            );
-
+            Logger('setting stop data in STOPS details panel ', value);
             setStops(value);
         });
 
@@ -34,6 +32,7 @@ function StopsPanel(): JSX.Element {
                     {stops.map((x, index) => {
                         return (
                             <div key={'stop' + index}>
+                                <br />
                                 <div>Sequence:{x.sequence}</div>
                                 <div>Type:{x.type}</div>
                                 <div>Location:{x.location}</div>
@@ -52,7 +51,7 @@ function StopsPanel(): JSX.Element {
                 </div>
             </div>
         );
-    else return <div style={{ fontSize: 14, fontWeight: 'bold' }}>Stops loading</div>;
+    else return <div style={{ fontSize: 18, fontWeight: 'bold' }}>Stops loading</div>;
 }
 
 export default StopsPanel;

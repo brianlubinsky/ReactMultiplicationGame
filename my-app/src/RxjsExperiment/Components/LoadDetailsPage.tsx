@@ -12,6 +12,7 @@ import TrackingUpdatesPanel from './TrackingUpdatesPanel';
 
 function LoadDetailsPage(): JSX.Element {
     const loadId = 7;
+    const [brokerService, setBrokerService] = useState<BrokerService | null>(null);
     const [indexDataService, setIndexDataService] = useState<IndexDataService | null>(null);
     const [stopService, setStopService] = useState<StopService | null>(null);
     const [trackingUpdateService, setTrackingUpdateService] = useState<TrackingUpdateService | null>(null);
@@ -21,6 +22,7 @@ function LoadDetailsPage(): JSX.Element {
         setIndexDataService(new IndexDataService(loadId));
         setStopService(new StopService(loadId));
         setTrackingUpdateService(new TrackingUpdateService(loadId));
+        setBrokerService(new BrokerService(loadId));
     }, []);
 
     useEffect(() => {
@@ -41,8 +43,11 @@ function LoadDetailsPage(): JSX.Element {
             <>
                 <IndexDataServiceContext.Provider value={indexDataService}>
                     <LoadDetailsPanel></LoadDetailsPanel>
-                    <CarriersPanel></CarriersPanel>
+                    <BrokerServiceContext.Provider value={brokerService}>
+                        <CarriersPanel></CarriersPanel>
+                    </BrokerServiceContext.Provider>
                 </IndexDataServiceContext.Provider>
+
                 <StopServiceContext.Provider value={stopService}>
                     <StopsPanel></StopsPanel>
                     <TrackingUpdateServiceContext.Provider value={trackingUpdateService}>

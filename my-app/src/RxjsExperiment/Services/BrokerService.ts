@@ -1,6 +1,7 @@
 import { Broker } from "../DataModels/Broker";
 import { Observable, BehaviorSubject, of, delay } from "rxjs";
 import React from "react";
+import { Logger } from "../Helpers/Logger";
 
 export interface IBrokerService
 {
@@ -22,21 +23,19 @@ export class BrokerService implements IBrokerService
    
     constructor(loadId:number)
     {
-        console.log(new Date().getMilliseconds() + "constructor for broker service called loadid = " + loadId);
         if (loadId > 0)
         {
 
-        console.log(new Date().getMilliseconds() + "loading broker data for load " + loadId);
-
-        //Simulate one second to retrieve index data
-        const subscription = of ([{brokerType:"MX", contactName:"Jose", company:"Mx co"},{brokerType:"US", contactName:"Joe", company:"US co"}]).pipe(delay(600)).subscribe(            
-            x=>{
-                this.brokerSubject.next(x); 
-                this.loadingSubject.next(false)                
-                subscription.unsubscribe();
-                console.log(new Date().getMilliseconds() + "finished loading broker data for load " + loadId);
-            }
-        );
+            Logger("loading broker data for load " + loadId,null);
+        
+            const subscription = of ([{brokerType:"MX", contactName:"Jose", company:"Mx co"},{brokerType:"US", contactName:"Joe", company:"US co"}]).pipe(delay(600)).subscribe(            
+                x=>{
+                    Logger("finished loading broker data for load " + loadId,null);
+                    this.brokerSubject.next(x); 
+                    this.loadingSubject.next(false)                
+                    subscription.unsubscribe();                    
+                }
+            );
         }
     }
 
@@ -48,10 +47,10 @@ export class BrokerService implements IBrokerService
             });
 
             clonedValue.push({brokerType:"new", company:"new co", contactName:"new contact"});
-            console.log(new Date().getMilliseconds() + "broker add service called");
+            Logger("broker add service called" ,null);
 
             this.loadingSubject.next(true);
-            const subscription = of(clonedValue).pipe(delay(500)).subscribe(x=>{this.brokerSubject.next(x); this.loadingSubject.next(false); subscription.unsubscribe(); console.log('Broker add service complete')});
+            const subscription = of(clonedValue).pipe(delay(500)).subscribe(x=>{this.brokerSubject.next(x); this.loadingSubject.next(false); subscription.unsubscribe(); Logger("broker add service complete" ,null);});
     }
 
 }

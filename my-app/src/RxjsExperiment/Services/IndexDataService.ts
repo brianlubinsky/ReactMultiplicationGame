@@ -1,6 +1,7 @@
 import { IndexData } from "../DataModels/IndexData";
 import { Observable,BehaviorSubject, of,delay } from "rxjs";
 import React from "react";
+import { Logger } from "../Helpers/Logger";
 
 export interface IIndexDataService
 {
@@ -21,21 +22,20 @@ export class IndexDataService implements IIndexDataService
    
     constructor(loadId:number)
     {
-        console.log(new Date().getMilliseconds() + "constructor for service called loadid = " + loadId);
         if (loadId > 0)
         {
 
-        console.log(new Date().getMilliseconds() + "loading index data for load " + loadId);
+            Logger("loading index data for load " + loadId,null);
 
-        //Simulate one second to retrieve index data
-        const subscription = of (<IndexData>{customerName:"The customer", refNo:"refno here", from:"Chicago, IL", to:"Juarez, MX", status:"Picked Up" }).pipe(delay(500)).subscribe(            
-            x=>{
-                this.indexDataSubject.next(x); 
-                this.loadingSubject.next(false)                
-                subscription.unsubscribe();
-                console.log(new Date().getMilliseconds() + "finished loading index data for load " + loadId);
-            }
-        );
+            //Simulate one second to retrieve index data
+            const subscription = of (<IndexData>{customerName:"The customer", refNo:"refno here", from:"Chicago, IL", to:"Juarez, MX", status:"Picked Up" }).pipe(delay(500)).subscribe(            
+                x=>{
+                    Logger("finished loading index data for load " + loadId,null);
+                    this.indexDataSubject.next(x); 
+                    this.loadingSubject.next(false)                
+                    subscription.unsubscribe();                    
+                }
+            );
         }
     }
 
