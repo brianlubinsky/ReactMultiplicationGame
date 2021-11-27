@@ -4,6 +4,7 @@ import { IndexData } from '../DataModels/IndexData';
 import { BrokerServiceContext } from '../Services/BrokerService';
 import { Broker } from '../DataModels/Broker';
 import { Logger } from '../Helpers/Logger';
+import { BrokersContext } from '../DataContexts/BrokersProvider';
 
 function CarriersPanel(): JSX.Element {
     const [indexData, setIndexData] = useState<IndexData | null>(null);
@@ -12,7 +13,7 @@ function CarriersPanel(): JSX.Element {
     const [brokersLoading, setBrokersLoading] = useState<boolean>(true);
 
     const indexDataService = useContext(IndexDataServiceContext);
-    const brokerService = useContext(BrokerServiceContext);
+    const brokerService = useContext(BrokersContext);
 
     useEffect(() => {
         const subscription = indexDataService?.indexData$.subscribe((value) => {
@@ -26,19 +27,16 @@ function CarriersPanel(): JSX.Element {
     }, [indexDataService]);
 
     useEffect(() => {
-        const brokersSubscription = brokerService?.broker$.subscribe((value) => {
-            Logger('setting broker data in CARRIER details panel', value);
-            setBrokers(value);
-        });
-
-        const brokersLoadingSubscription = brokerService?.loading$.subscribe((value) => {
-            Logger('setting broker loading data in CARRIER details panel', value);
-            setBrokersLoading(value);
+        const brokersSubscription = brokerService?.brokers$.subscribe((value) => {
+            setBrokersLoading(value.isLoading);
+            if (!value.isLoading) {
+                Logger('setting broker data in CARRIER details panel', value);
+                setBrokers(value.brokers);
+            }
         });
 
         return () => {
             brokersSubscription?.unsubscribe();
-            brokersLoadingSubscription?.unsubscribe();
         };
     }, [brokerService]);
 
@@ -67,7 +65,17 @@ function CarriersPanel(): JSX.Element {
                             );
                         })}
 
-                        <button onClick={() => brokerService?.addBroker()}>Add Broker</button>
+                        <button
+                            onClick={() =>
+                                brokerService?.addBroker({
+                                    brokerType: 'NewType',
+                                    contactName: 'NewContact',
+                                    company: 'New company',
+                                })
+                            }
+                        >
+                            Add Broker
+                        </button>
                     </div>
                 )}
             </div>

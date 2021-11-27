@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { BrokersProvider } from '../DataContexts/BrokersProvider';
 import { useBrokers } from '../DataHooks/useBrokers';
 import { BrokerService, BrokerServiceContext } from '../Services/BrokerService';
 import { IndexDataService, IndexDataServiceContext } from '../Services/IndexDataService';
@@ -9,12 +10,10 @@ import LoadDetailsPanel from './LoadDetailsPanel';
 import StopsPanel from './StopsPanel';
 import TrackingUpdatesPanel from './TrackingUpdatesPanel';
 
-//import { useParams } from 'react-router-dom';
-
 function LoadDetailsPage(): JSX.Element {
     const loadId = 7;
     //const [brokerService, setBrokerService] = useState<BrokerService | null>(null);
-    const brokerService = useBrokers(loadId);
+    //const brokerService = useBrokers(loadId);
     const [indexDataService, setIndexDataService] = useState<IndexDataService | null>(null);
     const [stopService, setStopService] = useState<StopService | null>(null);
     const [trackingUpdateService, setTrackingUpdateService] = useState<TrackingUpdateService | null>(null);
@@ -45,9 +44,9 @@ function LoadDetailsPage(): JSX.Element {
             <>
                 <IndexDataServiceContext.Provider value={indexDataService}>
                     <LoadDetailsPanel></LoadDetailsPanel>
-                    <BrokerServiceContext.Provider value={brokerService}>
+                    <BrokersProvider loadId={loadId}>
                         <CarriersPanel></CarriersPanel>
-                    </BrokerServiceContext.Provider>
+                    </BrokersProvider>
                 </IndexDataServiceContext.Provider>
 
                 <StopServiceContext.Provider value={stopService}>
