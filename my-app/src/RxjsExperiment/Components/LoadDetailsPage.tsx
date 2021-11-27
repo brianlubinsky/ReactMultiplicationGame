@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useBrokers } from '../DataHooks/useBrokers';
 import { BrokerService, BrokerServiceContext } from '../Services/BrokerService';
 import { IndexDataService, IndexDataServiceContext } from '../Services/IndexDataService';
 import { StopService, StopServiceContext } from '../Services/StopService';
@@ -12,7 +13,8 @@ import TrackingUpdatesPanel from './TrackingUpdatesPanel';
 
 function LoadDetailsPage(): JSX.Element {
     const loadId = 7;
-    const [brokerService, setBrokerService] = useState<BrokerService | null>(null);
+    //const [brokerService, setBrokerService] = useState<BrokerService | null>(null);
+    const brokerService = useBrokers(loadId);
     const [indexDataService, setIndexDataService] = useState<IndexDataService | null>(null);
     const [stopService, setStopService] = useState<StopService | null>(null);
     const [trackingUpdateService, setTrackingUpdateService] = useState<TrackingUpdateService | null>(null);
@@ -22,7 +24,7 @@ function LoadDetailsPage(): JSX.Element {
         setIndexDataService(new IndexDataService(loadId));
         setStopService(new StopService(loadId));
         setTrackingUpdateService(new TrackingUpdateService(loadId));
-        setBrokerService(new BrokerService(loadId));
+        //setBrokerService(new BrokerService(loadId));
     }, []);
 
     useEffect(() => {
